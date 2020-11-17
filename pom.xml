@@ -60,9 +60,9 @@
     <properties>
         <encoding>UTF-8</encoding>
         <java.version>1.8</java.version>
-        <scala.major.version>2.11</scala.major.version>
-        <scala.version>2.11.12</scala.version>
-        <scala.binary.version>2.11</scala.binary.version>
+        <scala.major.version>2.12</scala.major.version>
+        <scala.version>2.12.12</scala.version>
+        <scala.binary.version>2.12</scala.binary.version>
         <dep.junit.version>4.12</dep.junit.version>
         <dep.guava.version>19.0</dep.guava.version>
         <dep.mockito.version>1.10.19</dep.mockito.version>
@@ -72,38 +72,80 @@
         <dep.antlr.stringtemplate.version>4.0.2</dep.antlr.stringtemplate.version>
         <dep.slf4j.api.version>1.7.30</dep.slf4j.api.version>
         <dep.groupon.spark-metrics.version>1.0</dep.groupon.spark-metrics.version>
-        <dep.spark.version>2.4.5</dep.spark.version>
+        <dep.spark.version>3.0.1</dep.spark.version>
         <dep.fastjson.version>1.2.73</dep.fastjson.version>
         <dep.hbase.version>2.1.7</dep.hbase.version>
         <dep.hbase.connector.version>1.0.0</dep.hbase.connector.version>
         <dep.hudi.version>0.6.0</dep.hudi.version>
         <dep.deequ.version>1.0.5</dep.deequ.version>
-        <dep.embedded-elasticsearch.version>2.7.0</dep.embedded-elasticsearch.version>
-        <dep.hadoop-minicluster.version>2.7.3</dep.hadoop-minicluster.version>
-        <dep.spark-testing-base_2.11.version>2.4.3_0.12.0</dep.spark-testing-base_2.11.version>
-        <dep.scalatest-embedded-kafka_2.11.version>2.0.0</dep.scalatest-embedded-kafka_2.11.version>
+        <dep.elasticsearch.version>7.10.0</dep.elasticsearch.version>
         <dep.commons-lang3.version>3.10</dep.commons-lang3.version>
-        <dep.scopt.version>3.3.0</dep.scopt.version>
+        <dep.scopt.version>3.5.0</dep.scopt.version>
         <scala-maven-plugin.version>3.4.4</scala-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch-hadoop</artifactId>
+                <version>${dep.elasticsearch.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.spark</groupId>
+                        <artifactId>spark-sql_2.11</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.spark</groupId>
+                        <artifactId>spark-core_2.11</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.spark</groupId>
+                        <artifactId>spark-yarn_2.11</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.spark</groupId>
+                        <artifactId>spark-streaming_2.11</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.scala-lang</groupId>
+                        <artifactId>scala-library</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.scala-lang</groupId>
+                        <artifactId>scala-reflect</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.hudi</groupId>
-                <artifactId>hudi-spark-bundle_2.11</artifactId>
+                <artifactId>hudi-spark-bundle_2.12</artifactId>
                 <version>${dep.hudi.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.hbase.connectors.spark</groupId>
                 <artifactId>hbase-spark</artifactId>
                 <version>${dep.hbase.connector.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.spark</groupId>
+                        <artifactId>spark-catalyst_2.11</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.spark</groupId>
+                        <artifactId>spark-unsafe_2.11</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.scala-lang</groupId>
+                        <artifactId>scala-reflect</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
                 <groupId>org.mongodb.spark</groupId>
-                <artifactId>mongo-spark-connector_2.11</artifactId>
-                <version>2.4.1</version>
+                <artifactId>mongo-spark-connector_2.12</artifactId>
+                <version>3.0.0</version>
             </dependency>
 
             <dependency>
@@ -144,17 +186,17 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.spark</groupId>
-                <artifactId>spark-avro_2.11</artifactId>
+                <artifactId>spark-avro_2.12</artifactId>
                 <version>${dep.spark.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.spark</groupId>
-                <artifactId>spark-sql-kafka-0-10_2.11</artifactId>
+                <artifactId>spark-sql-kafka-0-10_2.12</artifactId>
                 <version>${dep.spark.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.spark</groupId>
-                <artifactId>spark-sql_2.11</artifactId>
+                <artifactId>spark-sql_2.12</artifactId>
                 <version>${dep.spark.version}</version>
             </dependency>
             <dependency>
@@ -201,39 +243,35 @@
             </dependency>
             <dependency>
                 <groupId>com.holdenkarau</groupId>
-                <artifactId>spark-testing-base_2.11</artifactId>
-                <version>${dep.spark-testing-base_2.11.version}</version>
+                <artifactId>spark-testing-base_2.12</artifactId>
+                <version>${dep.spark-testing-base_2.12.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>net.manub</groupId>
-                <artifactId>scalatest-embedded-kafka_2.11</artifactId>
-                <version>${dep.scalatest-embedded-kafka_2.11.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-minicluster</artifactId>
-                <version>${dep.hadoop-minicluster.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>pl.allegro.tech</groupId>
-                <artifactId>embedded-elasticsearch</artifactId>
-                <version>${dep.embedded-elasticsearch.version}</version>
-            </dependency>
+
 
             <dependency>
                 <groupId>com.amazon.deequ</groupId>
                 <artifactId>deequ</artifactId>
                 <version>${dep.deequ.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.spark</groupId>
+                        <artifactId>spark-core_2.11</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.spark</groupId>
+                        <artifactId>spark-sql_2.11</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.github.scopt</groupId>
-                <artifactId>scopt_2.11</artifactId>
+                <artifactId>scopt_2.12</artifactId>
                 <version>${dep.scopt.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.scalatest</groupId>
-                <artifactId>scalatest_2.11</artifactId>
+                <artifactId>scalatest_2.12</artifactId>
                 <version>3.2.0</version>
             </dependency>
         </dependencies>

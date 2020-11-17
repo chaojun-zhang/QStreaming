@@ -1,6 +1,6 @@
 FROM amd64/openjdk:8u265-jre-buster
 
-ARG SPARK_VERSION=2.4.5
+ARG SPARK_VERSION=3.0.1
 
 RUN wget -q https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz \
     && tar -xzf spark-${SPARK_VERSION}-bin-hadoop2.7.tgz \
